@@ -382,6 +382,7 @@ window.__require = function e(t, n, o) {
                 }, t.prototype.SetPlayerScore = function(e) {
                     this.playerData.score = e, this.Save()
                 }, t.prototype.GetPlayerScore = function() {
+                    //在这里将分数输出到文件？
                     return this.playerData.score
                 }, t.prototype.SetPlayerHighScore = function(e) {
                     this.playerData.highScore = e, this.Save()
