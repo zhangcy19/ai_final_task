@@ -11,28 +11,17 @@
   	pip3 install -r requirements.txt
   	```
   	
-  2. 运行游戏。若想在本地实现可参考 [*该教程*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw)
-  3. 运行项目。提供makefile，可以分别运行三种算法，开始会提示框选游戏屏幕区域，然后开始运算
-    ```bash
-    make sample
-    make heuristic
-    make reinforcement
-    ```
-    >使用 ***uninit*** 选项可以加载已保存的area，不必每次均框选屏幕
-    
-    >使用 ***image*** 选项可以将过程图片保存至output文件夹
-    
-    >使用 ***video*** 选项可以实时渲染项目模型
-    
-    >具体使用见makefile文件
+  2. 运行游戏。若想在本地实现可参考 [*该教程*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw)，本文件已提供游戏程序，并进行了必要改造
+  3. 运行项目。提供makefile，可以分别运行三种算法，初次运行程序会要求提供浏览器文件下载地址（用于游戏分数的输出）以及框选游戏屏幕区域(用于图像识别)，以后不再需要
   
-    如果使用 ***image*** 选项输出了一系列图片，可以通过以下命令将图片转为GIF
-   ```bash
-   make save
-   ```
+  > 如果想强制重新初始化，请将assist_data/state.txt内的1改为0
+  
+  > 如果不希望生成过程记录，请添加 *-off* 选项
+  
+  > 具体使用见Makefile 
 
 #### 进展情况
-+ ~~接口实现~~  （还差一个getScore函数用于强化学习>_<）
++ ~~接口实现~~ 
 + 启发式算法
 + 强化学习算法
 + 封装
@@ -40,7 +29,7 @@
 
 
 #### 版权声明
-+ 游戏源码源自网友 [*程序员鱼皮*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw) 并进行了修改（去除广告、打开部分接口）
++ 游戏源码源自网友 [*程序员鱼皮*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw) 并进行了修改（去除广告，打开获取得分的接口）
 + 图像识别基于百度开源深度学习平台 [*paddlex*](https://www.paddlepaddle.org.cn) 进行模型训练与优化，游戏算法使用了python的 [*sklearn库*](https://scikit-learn.org/stable/) 
 
 
