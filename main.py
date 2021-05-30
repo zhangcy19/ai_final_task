@@ -8,40 +8,49 @@ import sampleAI
 import heuristicAI
 import reinforcementAI
 
-api = interface.MyAPI()
-msg = "usage:  main.py [init/uninit] [off/image/video] [sample/heuristic/reinforcement]"
+msg = "usage:  main.py [sample/heuristic/reinforcement] -off"
 str = "*" * 30
 
-if len(sys.argv) != 4:
+if len(sys.argv) < 2 or len(sys.argv) >3:
     print(msg)
+    exit(0)
 
-if sys.argv[1] == "init":
-    api.Image.getArea()
-    api.Image.saveArea()
-elif sys.argv[1] == "uninit":
-    api.Image.loadArea()
+api = interface.MyAPI()
+with open("assist_data/state.txt", "r") as f:
+    state = f.read()
+    if state == "1":
+        api.Image.loadArea()
+        api.loadPath()                
+    else:
+        api.getPath()
+        api.Image.getArea()
+        api.Image.saveArea()
+with open("assist_data/state.txt", "w") as f:
+    f.write("1")
+
+if len(sys.argv) == 3 and sys.argv[2] == "off":
+    api.Assistant.visualize = "off"
+elif len(sys.argv) == 2:
+    api.Assistant.visualize = "image"
 else:
     print(msg)
+    exit(0)
 
-if sys.argv[2] in ["off", "image", "video"]:
-    api.Assistant.visualize = sys.argv[2]
-else:
-    print(msg)
-
-if sys.argv[3] == "sample":
+if sys.argv[1] == "sample":
     print(str)
-    print("\t启动样例AI!")
+    print("\t启动样例AI")
     print(str)
     sampleAI.MyAI(api)
-elif sys.argv[3] == "heuristic":
+elif sys.argv[1] == "heuristic":
     print(str)
-    print("\t启动启发式AI!")
+    print("\t启动启发式AI")
     print(str)
     heuristicAI.MyAI(api)
-elif sys.argv[3] == "reinforcement":
+elif sys.argv[1] == "reinforcement":
     print(str)
-    print("\t启动强化学习AI!")
+    print("\t启动强化学习AI")
     print(str)
     reinforcementAI.MyAI(api)
 else:
     print(msg)
+    exit(0)

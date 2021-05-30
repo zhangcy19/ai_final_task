@@ -2,10 +2,13 @@
 
 #接口，实现与游戏的交互
 
+from sys import path
 from tkinter.constants import N
 import grab
 import recognition
 import pyautogui
+import cv2
+import os
 
 class MyAPI():
     def __init__(self):
@@ -15,6 +18,9 @@ class MyAPI():
         self.step = 0
         self.state_buf = None
         self.state_cur = None
+        self.path = ""
+        self.score = 0
+        self.initScore()
 
         self.step_limit = 10
         self.wait_time = 1
@@ -23,24 +29,27 @@ class MyAPI():
         return self.state_cur
     
     def getRange(self):
-        print("\ngetting game window range...")
+        print("\n获取游戏窗口的坐标范围...")
         return self.Image.x1, self.Image.x2
 
     def putFruit(self, x):
-        print("putting fruit at %d..."%x)
+        print("在x = %d 处放置水果..."%x)
         pyautogui.click(x, (self.Image.y1+self.Image.y2)//2)
         self.step += 1
 
     def getScore(self):
-        #待完成
-        return 1
+        os.system("python3 readData.py %s/*.json"%self.path)
+        with open("assist_data/score.txt", "r") as f:
+            self.score = f.read()
+        self.initPath()
+        return self.score
 
     def gameOver(self):
         if len(self.state_cur[0]) == 0 and self.step != 0:
-            print("game over, exit!")
+            print("游戏结束，退出")
             return True
         if self.step > self.step_limit:
-            print("step limit exceeded, exit!")
+            print("步数达到设定值，退出")
             return True
         return False
 
@@ -54,7 +63,7 @@ class MyAPI():
             return False
 
     def updateState(self):
-        print("\nupdating game state...")
+        print("\n更新游戏状态...")
         self.state_buf = self.state_cur
         self.state_cur = self.Assistant.run(self.Image.getImage(), self.area)
 
@@ -70,9 +79,30 @@ class MyAPI():
     def setFix(self, fix):
         self.Assistant.fix = fix
         self.Image.fix = fix
-
     
+    def output(self, name):
+        os.system("python3 saveImage.py %s output/*.png "%name)
+        os.system("rm output/*.png")
 
+    def getPath(self):
+        print("提供路径：浏览器文件下载的绝对路径（示例：/Users/zhangcy19/Downloads）\n确保该文件夹下无其他文件")
+        self.path = input("请输入路径：")
+        print("设定完成，当前分数路径：%s\n"%self.path)
+        with open("assist_data/path.txt", "w") as f:
+            f.write(self.path)
+        self.initPath()
+
+    def loadPath(self):
+        with open("assist_data/path.txt", "r") as f:
+            self.path = f.read()
+        self.initPath()
+
+    def initPath(self):
+        with open(self.path + "/score.json", "w") as f:
+            f.write("0")
+        with open("assist_data/score.txt", "w") as f:
+            f.write(str(self.score))
     
-
-
+    def initScore(self):
+        with open("assist_data/score.txt", "w") as f:
+            f.write("0")

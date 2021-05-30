@@ -44,7 +44,7 @@ class MyImage:
 
         def getSecondPoint(event):
             self.x2, self.y2 = event.x, event.y
-            print("设定完成，当前区域为（%d，%d）至（%d， %d）"%(self.x1, self.y1, self.x2, self.y2))
+            print("设定完成，当前区域:（%d，%d）至（%d， %d）\n"%(self.x1, self.y1, self.x2, self.y2))
             #print(self.x1, self.y1, self.x2, self.y2)
             exitMotion(None)
          
@@ -66,10 +66,10 @@ class MyImage:
     def saveArea(self):
         info = [self.x1, self.y1, self.x2, self.y2]
         #print(self.x1, self.y1, self.x2, self.y2)
-        with open("area.json", "w") as f:
+        with open("assist_data/area.json", "w") as f:
             json.dump(info, f)
     
     def loadArea(self):
-        with open("area.json", "r") as f:
+        with open("assist_data/area.json", "r") as f:
             self.x1, self.y1, self.x2, self.y2 = json.loads(f.read()) 
             #print(self.x1, self.y1, self.x2, self.y2)
