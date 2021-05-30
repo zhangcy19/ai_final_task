@@ -19,8 +19,11 @@
     make reinforcement
     ```
     >使用 ***uninit*** 选项可以加载已保存的area，不必每次均框选屏幕
+    
     >使用 ***image*** 选项可以将过程图片保存至output文件夹
+    
     >使用 ***video*** 选项可以实时渲染项目模型
+    
     >具体使用见makefile文件
   
     如果使用 ***image*** 选项输出了一系列图片，可以通过以下命令将图片转为GIF
@@ -37,8 +40,8 @@
 
 
 #### 版权声明
-+ 游戏源码源自网友 [*程序员鱼皮*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw)并进行了修改（去除广告、打开部分接口）
-+ 图像识别基于百度开源深度学习平台 [*paddlex*](https://www.paddlepaddle.org.cn) 进行模型训练与优化，游戏算法使用了python的 *sklearn库*
++ 游戏源码源自网友 [*程序员鱼皮*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw) 并进行了修改（去除广告、打开部分接口）
++ 图像识别基于百度开源深度学习平台 [*paddlex*](https://www.paddlepaddle.org.cn) 进行模型训练与优化，游戏算法使用了python的 [*sklearn库*](https://scikit-learn.org/stable/) 
 
 
 
