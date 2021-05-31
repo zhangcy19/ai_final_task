@@ -8,8 +8,6 @@ from paddlex import deploy
 
 class MyAssitant():
     def __init__(self):
-        self.x1, self.y1 = 0, 0
-        self.x2, self.y2 = 1, 1
         self.category = [
             'pt', 'yt', 'jz', 'nm',
             'mht', 'xhs', 'tz', 'bl', 'yz', 'xg', 'dxg'
@@ -26,30 +24,35 @@ class MyAssitant():
         self.tolerance = 0.3
         self.font = cv2.FONT_HERSHEY_SIMPLEX
         self.fix = 2
-        self.visualize = "off"
+        self.visualize = "image"
+        self.x_put = -1
 
     def load_model(self):
         print("loading model...")
         self.det = deploy.Predictor("assist_model")
         print("loading finished!\n")
 
-    def draw(self, datas, img):
-        color = (0, 255, 0)
+    def draw(self, datas, img, y1, y2):
+        color_g = (0, 255, 0)
+        color_r = (0, 0, 255)
+        color_b = (255, 0, 0)
+        color_black = (0, 0, 0)
         for value in datas:         
             score = value['score']
             if score < self.tolerance:
                 continue
             xmin, ymin, w, h = np.array(value['bbox']).astype(np.int)
             category = value['category']
-            cv2.rectangle(img, (xmin, ymin), (xmin+w, ymin+h), color, 4)
+            cv2.rectangle(img, (xmin, ymin), (xmin+w, ymin+h), color_g, 4)
             cv2.putText(img, '{:s}'.format(category),
-                            (xmin, ymin), self.font, 1.0, (255, 0, 0), thickness=2)
+                            (xmin, ymin), self.font, 1.0, color_black, thickness=2)
+            if self.x_put >= 0:
+                cv2.line(img, (self.x_put*2, y1*2), (self.x_put*2, y2*2), color_r, 4)
+                cv2.putText(img, "put on x=%d"%(self.x_put*2), (self.x_put*2, y1*2),self.font, 1.0, color_black, thickness=2)
+                self.x_put = -1
         return img
 
-    def run(self, img, ls):
-        self.x1, self.y1 = ls[0], ls[1]
-        self.x2, self.y2 = ls[2], ls[3]
-          
+    def run(self, img, window_x, window_y1, window_y2):
         image = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)
         datas = self.det.predict(image)
         category_list = []
@@ -68,11 +71,14 @@ class MyAssitant():
         #print(x_list)
         #print(y_list)
         if self.visualize == "image":   
-            image = self.draw(datas, image)
+            image = self.draw(datas, image, window_y1, window_y2)
             cv2.imwrite("output/img{}.png".format(self.count), image)
             self.count += 1
         elif self.visualize == "video": 
-            image = self.draw(datas, image)
+            image = self.draw(datas, image, window_y1, window_y2)
+            cv2.imwrite("output/img{}.png".format(self.count), image)
+            self.count += 1
+            cv2.moveWindow("window", window_x+20, 0)
             cv2.imshow("window", image)
             cv2.waitKey(100)      
         return category_list, x_list, y_list

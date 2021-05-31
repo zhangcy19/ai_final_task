@@ -14,7 +14,6 @@ class MyAPI():
     def __init__(self):
         self.Image = grab.MyImage()
         self.Assistant = recognition.MyAssitant()
-        self.area = [self.Image.x1, self.Image.y1, self.Image.x2, self.Image.y2]
         self.step = 0
         self.state_buf = None
         self.state_cur = None
@@ -34,6 +33,7 @@ class MyAPI():
 
     def putFruit(self, x):
         print("在x = %d 处放置水果..."%x)
+        self.Assistant.x_put = x
         pyautogui.click(x, (self.Image.y1+self.Image.y2)//2)
         self.step += 1
 
@@ -45,7 +45,7 @@ class MyAPI():
         return self.score
 
     def gameOver(self):
-        if len(self.state_cur[0]) == 0 and self.step != 0:
+        if len(self.state_cur[0]) == 0 and self.step >= 10:
             print("游戏结束，退出")
             return True
         if self.step > self.step_limit:
@@ -54,7 +54,7 @@ class MyAPI():
         return False
 
     def gameStable(self):
-        #state = self.Assistant.run(self.Image.getImage(), self.area)
+        #state = self.Assistant.run(self.Image.getImage())
         if self.step == 0:
             return True
         if len(self.state_cur[0]) == len(self.state_buf[0]):
@@ -65,7 +65,7 @@ class MyAPI():
     def updateState(self):
         print("\n更新游戏状态...")
         self.state_buf = self.state_cur
-        self.state_cur = self.Assistant.run(self.Image.getImage(), self.area)
+        self.state_cur = self.Assistant.run(self.Image.getImage(), self.Image.x2, self.Image.y1, self.Image.y2)
 
     def setWaitTime(self, time):
         self.wait_time = time

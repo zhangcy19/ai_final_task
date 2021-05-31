@@ -30,6 +30,8 @@ with open("assist_data/state.txt", "w") as f:
 
 if len(sys.argv) == 3 and sys.argv[2] == "off":
     api.Assistant.visualize = "off"
+elif len(sys.argv) == 3 and sys.argv[2] == "video":
+    api.Assistant.visualize = "video"
 elif len(sys.argv) == 2:
     api.Assistant.visualize = "image"
 else:
