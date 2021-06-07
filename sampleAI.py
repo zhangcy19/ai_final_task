@@ -32,7 +32,7 @@ def MyAI(api):
      
     while(True):
         api.updateState()
-        print("当前分数：",api.getScore())
+        #print("当前分数：",api.getScore())
         if api.gameOver():
             break
         if not api.gameStable():

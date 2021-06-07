@@ -85,9 +85,13 @@ class MyAPI():
         os.system("rm output/*.png")
 
     def getPath(self):
-        print("提供路径：浏览器文件下载的绝对路径（示例：/Users/zhangcy19/Downloads）\n确保该文件夹下无其他文件")
-        self.path = input("请输入路径：")
-        print("设定完成，当前分数路径：%s\n"%self.path)
+        print("调试：提供路径，浏览器文件下载的绝对路径（示例：/Users/zhangcy19/Downloads）(确保该文件夹下无其他文件)")
+        print("在线测试：直接回车")
+        self.path = input("请输入：")
+        if self.path != "":
+            print("设定完成，当前分数路径：%s\n"%self.path)
+        else:
+            print("设定完成，在线测试模式")
         with open("assist_data/path.txt", "w") as f:
             f.write(self.path)
         self.initPath()
@@ -98,6 +102,8 @@ class MyAPI():
         self.initPath()
 
     def initPath(self):
+        if self.path == "":
+            return
         with open(self.path + "/score.json", "w") as f:
             f.write("0")
         with open("assist_data/score.txt", "w") as f:
