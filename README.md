@@ -37,7 +37,7 @@
 
 #### 版权声明
 + 游戏源码源自网友 [*程序员鱼皮*](https://mp.weixin.qq.com/s/H9VR1MWn-9bKSC_1l_MkJw) 并进行了修改（去除广告，打开获取得分的接口）
-+ 图像识别基于百度开源深度学习平台 [*paddlex*](https://www.paddlepaddle.org.cn) 进行模型训练与优化，游戏算法使用了python的pytorch框架
++ 图像识别基于百度开源深度学习平台 [*paddlex*](https://www.paddlepaddle.org.cn) 进行模型训练与优化，游戏算法使用了 python 的 pytorch 框架
 + 其余代码均为原创
 
 
